@@ -1,0 +1,9 @@
+.git
+.env*
+.dev.vars
+node_modules
+dist
+prototype
+docs
+schema.sql
+setup.sql
