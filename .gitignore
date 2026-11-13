@@ -3,3 +3,5 @@ dist/
 .dev.vars
 node_modules/
 .vercel/
+public/voice.js
+public/voice.js.LEGAL.txt

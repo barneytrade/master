@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 import {handleWebApi} from '../web-api.mjs';
 const env={TRADERELAY_API_TOKEN:'a'.repeat(64)};
 const request=(path,method='GET',body,origin='https://example.com')=>new Request('https://example.com'+path,{method,headers:{origin,'content-type':'application/json'},body});
+test('browser voice config exposes only explicitly public settings and performs no provider call',async()=>{
+ const r=await handleWebApi(request('/api/voice-config'),{...env,RETELL_PUBLIC_KEY:'key_public',RETELL_AGENT_ID:'agent_demo',RETELL_API_KEY:'private-secret'},()=>{throw Error('must not call provider');});
+ assert.equal(r.status,200);assert.deepEqual(await r.json(),{ready:true,public_key:'key_public',agent_id:'agent_demo'});
+});
 test('server proxy forwards the backend credential without returning it to the browser',async()=>{
  let forwarded;
  const r=await handleWebApi(request('/api/state'),env,async(url,options)=>{forwarded={url,options};return Response.json({company:{name:'Demo'},leads:[]});});
