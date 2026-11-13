@@ -7,3 +7,5 @@ Use the official Retell Web SDK with a domain-restricted public key. No private 
 Plan: test configuration allowlisting and voice-input validation; implement and bundle the browser client; add the form and progress/error states; configure the public key and dynamic agent prompt through authorized provider controls; verify the UI and deploy. An audible conversation is verified with the user, never represented as completed based only on a successful page load.
 
 Voice selection: the Test form offers British (retell-Willa, default) and American (retell-Chloe). Each call includes the selected voice_id in agent_override.agent. The selector is locked until the session ends. Long Island is not offered because no available voice has been verified as that accent.
+
+The first-name field has been removed; caller details can be gathered conversationally when relevant. Additional provider-labelled voices: British Maren, American Grace and American Cimo. The voice request does not send a caller name.

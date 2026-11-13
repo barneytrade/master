@@ -22,7 +22,7 @@ The Supabase Edge Function traderelay continues to run the shared gateway.mjs an
 
 `npm run build:vercel` runs the tests and bundles the browser voice client into `public/voice.js`. Set `RETELL_PUBLIC_KEY` and `RETELL_AGENT_ID` in Vercel; these are browser-visible values. Never use a private Retell API key. Restrict the public key to `master-gamma-three.vercel.app`. The dedicated agent prompt is in `prompts/traderelay-browser-demo.md`.
 
-The Test tab starts a microphone conversation only after a name and explicit consent. It sends saved business facts to Retell, limits the session to three minutes and provides End call and audio recovery controls. It does not call a telephone or write voice transcripts to the enquiry inbox. Live microphone and speaker testing remains a manual check.
+The Test tab starts a microphone conversation only after explicit consent. It sends saved business facts to Retell, limits the session to three minutes and provides End call and audio recovery controls. It does not call a telephone or write voice transcripts to the enquiry inbox. Live microphone and speaker testing remains a manual check.
 
 ## Preserved work
 
