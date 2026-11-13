@@ -1,4 +1,5 @@
 import {scanWebsite} from './extract.mjs';
+import {publicVoiceConfig} from './voice-demo.mjs';
 
 const headers={'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer'};
 const unavailable=()=>Response.json({error:'Connection unavailable. Please try again.'},{status:502,headers});
@@ -10,6 +11,7 @@ export async function handleWebApi(req,env,fetcher=fetch){
  if(!env.TRADERELAY_API_TOKEN)return Response.json({error:'The backend is not configured.'},{status:503,headers});
  if(!['GET','POST','PATCH'].includes(req.method))return new Response('Method not allowed',{status:405,headers});
  if(req.method!=='GET'&&req.headers.get('origin')!==url.origin)return new Response('Origin rejected',{status:403,headers});
+ if(url.pathname==='/api/voice-config'&&req.method==='GET')return Response.json(publicVoiceConfig(env),{headers});
  if(url.pathname==='/api/extract'&&req.method==='POST'){
   try{
    const raw=await req.text();if(raw.length>3000)return Response.json({error:'URL too long.'},{status:413,headers});

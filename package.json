@@ -1,1 +1,17 @@
-{"name":"traderelay-poc","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","build":"node build.mjs","dev":"node dev.mjs"}}
+{
+  "name": "traderelay-poc",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build": "node build.mjs",
+    "dev": "node dev.mjs",
+    "build:vercel": "npm test && node build-voice.mjs"
+  },
+  "dependencies": {
+    "retell-client-js-sdk": "3.0.4"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
