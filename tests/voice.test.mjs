@@ -19,3 +19,12 @@ test('a voice trial requires explicit consent, a name and a saved business',()=>
  assert.equal(x.agent_override.agent.max_call_duration_ms,180000);
  assert.equal(x.metadata.source,'traderelay-browser-demo');assert.ok(!JSON.stringify(x).includes('ignored'));
 });
+
+test('voice selection applies only a supported voice to the next call',()=>{
+ const company={id:'demo',name:'Example Plumbers'};
+ const input={name:'Sam',consent:true};
+ assert.equal(voiceCallOptions(company,input,'agent_demo').agent_override.agent.voice_id,'retell-Willa');
+ assert.equal(voiceCallOptions(company,{...input,voice:'british'},'agent_demo').agent_override.agent.voice_id,'retell-Willa');
+ assert.equal(voiceCallOptions(company,{...input,voice:'american'},'agent_demo').agent_override.agent.voice_id,'retell-Chloe');
+ assert.throws(()=>voiceCallOptions(company,{...input,voice:'untrusted-provider-id'},'agent_demo'),/voice/i);
+});

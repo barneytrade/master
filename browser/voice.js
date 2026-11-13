@@ -4,16 +4,16 @@ import {voiceCallOptions} from '../voice-demo.mjs';
 const form=document.querySelector('#voice-form'),start=document.querySelector('#voice-start'),end=document.querySelector('#voice-end'),status=document.querySelector('#voice-status'),audio=document.querySelector('#voice-audio');
 let session=null,starting=false,config=null,cancelled=false,attempt=0;
 const say=text=>{status.textContent=text;};
-const reset=()=>{session=null;starting=false;start.disabled=!config?.ready;end.disabled=true;audio.hidden=true;form.elements.name.disabled=false;};
+const reset=()=>{session=null;starting=false;start.disabled=!config?.ready;end.disabled=true;audio.hidden=true;form.elements.name.disabled=false;form.elements.voice.disabled=false;};
 async function read(path){const r=await fetch('/api/'+path);const x=await r.json();if(!r.ok)throw Error(x.error||'Unable to load the voice demo.');return x;}
 read('voice-config').then(x=>{config=x;start.disabled=!x.ready;say(x.ready?'Ready. Use headphones if you can.':'Browser voice is being connected. You can still try saving an enquiry below.');}).catch(()=>say('Voice setup could not be loaded. Refresh the page to try again.'));
 
 form.addEventListener('submit',async event=>{
  event.preventDefault();if(starting||session||!config?.ready)return;
- const turn=++attempt;let failure=null;starting=true;cancelled=false;start.disabled=true;end.disabled=false;form.elements.name.disabled=true;say('Loading your saved business profile…');
+ const turn=++attempt;let failure=null;starting=true;cancelled=false;start.disabled=true;end.disabled=false;form.elements.name.disabled=true;form.elements.voice.disabled=true;say('Loading your saved business profile…');
  try{
   const state=await read('state');
-  const options=voiceCallOptions(state.company,{name:form.elements.name.value,consent:form.elements.consent.checked},config.agent_id);
+  const options=voiceCallOptions(state.company,{name:form.elements.name.value,consent:form.elements.consent.checked,voice:form.elements.voice.value},config.agent_id);
   if(cancelled||turn!==attempt)return;
   say('Connecting… Allow microphone access when asked.');
   const client=new RetellClient({key:config.public_key});

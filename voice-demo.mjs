@@ -9,11 +9,14 @@ export function voiceCallOptions(company,input,agentId){
  const name=typeof input.name==='string'?input.name.trim():'';
  if(!name||name.length>120)throw Error('Enter your name (up to 120 characters).');
  if(!company||typeof company.name!=='string'||!company.name.trim())throw Error('Save a business profile before starting the voice demo.');
+ const voices={british:'retell-Willa',american:'retell-Chloe'};
+ const selected=input.voice??'british';
+ if(!Object.hasOwn(voices,selected))throw Error('Choose a supported voice.');
  const facts={};for(const key of ['name','services','coverage','hours'])facts[key]=typeof company[key]==='string'&&company[key].trim()?company[key].trim().slice(0,500):'Not confirmed';
  return {
   agent_id:agentId,
   retell_llm_dynamic_variables:{business_name:facts.name,business_facts:JSON.stringify(facts),tester_name:name},
   metadata:{source:'traderelay-browser-demo',company_id:String(company.id||'demo')},
-  agent_override:{agent:{max_call_duration_ms:180000,end_call_after_silence_ms:30000}}
+  agent_override:{agent:{voice_id:voices[selected],max_call_duration_ms:180000,end_call_after_silence_ms:30000}}
  };
 }
